@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Theatre Seat Layout</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        .container {
+            background-color: white;
+            padding: 50px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 90%;
+        }
+        .screen {
+            width: 100%;
+            background-color: #ddd;
+            text-align: center;
+            padding: 15px;
+            font-weight: bold;
+            margin-bottom: 30px;
+        }
+        .seating-area {
+            display: flex;
+            flex-direction: column;
+            width: 85%;
+        }
+        .section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 10px 0;
+            width: 100%;
+            position: relative;
+        }
+        .zone-container {
+            display: flex;
+            position: relative;
+        }
+        .zone {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+        }
+        .row-container {
+            display: flex;
+            align-items: center;
+        }
+        .row-label {
+            width: 25px;
+            text-align: center;
+            font-weight: bold;
+        }
+        .seats {
+            display: grid;
+            grid-gap: 4px;
+            margin-left: 10px;
+        }
+        .seat {
+            width: 23px;
+            height: 23px;
+            background-color: white;
+            border: 1px solid #ccc;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 12px;
+            font-weight: bold;
+            border-radius: 4px;
+        }
+        .seat.sold {
+            background-color: #aaa;
+            color: white;
+        }
+        .seat.female {
+            background-color: pink;
+            color: black;
+        }
+        .seat.male {
+            background-color: lightblue;
+            color: black;
+        }
+    .pay-button {
+    background-color: #f5425a;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-top: 20px;
+}
+
+.pay-button:hover {
+    background-color: #d12c45;
+}
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="screen">Screen</div>
+        <div class="seating-area">
+            <div class="section">
+                <div class="section-header">Rs.100</div>
+                <div class="zone-container">
+                    <div class="zone">
+                        <div class="zone-header">Family Zone</div>
+                        <div class="seats" id="seats-100-family"></div>
+                    </div>
+                    <div class="zone-separator"></div>
+                    <div class="zone">
+                        <div class="zone-header">Friends Zone</div>
+                        <div class="seats" id="seats-100-friends"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="section">
+                <div class="section-header">Rs.145</div>
+                <div class="zone-container">
+                    <div class="zone">
+                        <div class="zone-header">Family Zone</div>
+                        <div class="seats" id="seats-145-family"></div>
+                    </div>
+                    <div class="zone-separator"></div>
+                    <div class="zone">
+                        <div class="zone-header">Friends Zone</div>
+                        <div class="seats" id="seats-145-friends"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="section">
+                <div class="section-header">Rs.250</div>
+                <div class="zone-container">
+                    <div class="zone">
+                        <div class="zone-header">Friends Zone</div>
+                        <div class="seats" id="seats-250-friends"></div>
+                    </div>
+                    <div class="zone-separator"></div>
+                    <div class="zone">
+                        <div class="zone-header">Family Zone</div>
+                        <div class="seats" id="seats-250-family"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+<center>
+    <button class="pay-button" onclick="redirectToPayment()">Pay Now</button>
+</center>
+       </div>
+    <script>
+        const seatData = {
+       "E-15": {status: "sold", gender: "female"},
+             "G-7": {status: "sold", gender: "male"},
+            "A-5": {status: "sold", gender: "female"},
+            "A-1": {status: "sold", gender: "male"},
+            "B-2": {status: "sold", gender: "male"},
+            "B-10": {status: "sold", gender: "male"},
+            "B-11": {status: "sold", gender: "male"},
+            "C-3": {status: "sold", gender: "female"},
+            "C-4": {status: "sold", gender: "female"},  
+            "C-5": {status: "sold", gender: "female"},
+            "D-8": {status: "sold", gender: "male"},
+            "F-12": {status: "sold", gender: "female"},
+            "H-6": {status: "sold", gender: "male"},
+            "I-14": {status: "sold", gender: "female"},
+            "J-9": {status: "sold", gender: "male"}
+        };
+
+        let rowLabels = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R'];
+        let rowIndex = 0;
+
+        function generateSeats(containerId, rows, cols) {
+            const container = document.getElementById(containerId);
+            container.innerHTML = "";
+            
+            for (let row = 0; row < rows; row++) {
+                const rowContainer = document.createElement('div');
+                rowContainer.classList.add('row-container');
+                
+                const rowLabel = document.createElement('div');
+                rowLabel.classList.add('row-label');
+                rowLabel.textContent = rowLabels[rowIndex];
+                rowContainer.appendChild(rowLabel);
+                
+                const seatsGrid = document.createElement('div');
+                seatsGrid.classList.add('seats');
+                seatsGrid.style.gridTemplateColumns = `repeat(${cols}, 25px)`;
+                
+                for (let col = 1; col <= cols; col++) {
+                    const seat = document.createElement('div');
+                    seat.classList.add('seat');
+                    const seatId = `${rowLabels[rowIndex]}-${col}`;
+                    if (seatData[seatId]) {
+                        seat.classList.add('sold', seatData[seatId].gender);
+                        seat.textContent = seatData[seatId].gender === "female" ? "F" : "M";
+                    }
+                    seatsGrid.appendChild(seat);
+                }
+                
+                rowContainer.appendChild(seatsGrid);
+                container.appendChild(rowContainer);
+                rowIndex++;
+            }
+        }
+        
+        generateSeats("seats-100-family", 2, 20);
+        generateSeats("seats-100-friends", 2, 10);
+        generateSeats("seats-145-family", 5, 12);
+        generateSeats("seats-145-friends", 5, 8);
+        generateSeats("seats-250-friends", 2, 10);
+        generateSeats("seats-250-family", 2, 10)
+</script>
+</body>
+</html>

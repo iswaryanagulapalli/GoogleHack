@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seat Selection</title>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        .container { text-align: center; padding: 20px; }
+        .seats { display: flex; justify-content: center; margin: 10px 0; }
+        .seats span { margin: 0 10px; cursor: pointer; padding: 10px; border-radius: 50%; background-color: #f3f3f3; }
+        .seats span.selected { background-color: #f5425a; color: white; }
+        .options { display: flex; justify-content: space-around; margin: 15px 0; }
+        .available { color: green; }
+        .sold-out { color: grey; }
+        button { background-color: #f5425a; color: white; border: none; padding: 10px 20px; cursor: pointer; }
+        .buy-tickets { margin-top: 15px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>How Many Seats?</h2>
+        <center>
+            <img src="C:\Users\ISWARYA\Documents\Car2.jpg" alt="Car Illustration" width="150">
+        </center>
+
+        <div class="seats">
+            <span>1</span><span class="selected">2</span><span>3</span><span>4</span><span>5</span><span>6</span>
+        </div>
+
+        <div class="options">
+            <div>PLATINUM<br><strong>Rs. 350</strong><br><span class="sold-out">Sold Out</span></div>
+            <div>GOLD<br><strong>Rs. 250</strong><br><span class="available">Available</span></div>
+            <div>LOUNGERS<br><strong>Rs. 250</strong><br><span class="available">Available</span></div>
+        </div>
+
+        <center>
+            <div class="buy-tickets">
+                <label for="ticket-type">Buy Tickets for:</label>
+                <select id="ticket-type" onchange="toggleCategoryOptions()">
+                    <option value="family">Family</option>
+                    <option value="friends">Friends</option>
+                    <option value="single">Single</option>
+                </select>
+
+                <div id="category-options" style="display: none; margin-top: 10px;">
+                    <label>Category:</label>
+                    <input type="radio" name="category" value="male" checked> Male
+                    <input type="radio" name="category" value="female"> Female
+                </div>
+
+                <button onclick="redirectToSeatLayout()" style="background-color: red; color: white; padding: 10px 20px; margin-top: 20px;">Book Now</button>
+        </center>
+    </div>
+
+    <script>
+        function toggleCategoryOptions() {
+            const ticketType = document.getElementById('ticket-type').value;
+            const categoryOptions = document.getElementById('category-options');
+            categoryOptions.style.display = (ticketType === 'friends' || ticketType === 'single') ? 'block' : 'none';
+        }
+
+        function redirectToSeatLayout() {
+            console.log("Redirecting to seat layout...");
+            window.location.href = "Theatre3.html";
+        }
+    </script>
+</body>
+</html>
